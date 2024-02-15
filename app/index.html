@@ -5,7 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<script defer>
+    function sendDataToAPI(event) {
+        event.preventDefault()
+
+        var formData = new FormData(event.target); // Access the form
+        var jsonData = JSON.stringify(Object.fromEntries(formData)); 
+
+        fetch('https://nnuwagiry8.execute-api.eu-north-1.amazonaws.com/default/alternativelamda', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: jsonData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to send data to the API');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Error sending data to API:', error);
+        });
+    }
+</script>
 <body>
     <h1>hello world</h1>
+    <form onsubmit= "sendDataToAPI(e)" method="POST">
+        <input name="databaseinput" type="text">
+        <button type="submit">submit</button>
+    </form>
 </body>
 </html>
